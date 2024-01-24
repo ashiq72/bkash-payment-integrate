@@ -7,5 +7,10 @@ router.post(
   middleware.bkash_auth,
   paymentController.payment_create
 );
+router.get(
+  "/bkash/payment/callback",
+  middleware.bkash_auth,
+  paymentController.call_back
+);
 
 module.exports = router;

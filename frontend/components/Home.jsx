@@ -8,6 +8,7 @@ function Home() {
         { amount: 50, orderId: 1 },
         { withCredentials: true }
       );
+      window.location.href = data.bkashURL;
     } catch (error) {
       console.log(error);
     }
