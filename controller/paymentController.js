@@ -1,6 +1,7 @@
 const axios = require("axios");
 const globals = require("node-global-storage");
 const { v4: uuidv4 } = require("uuid");
+const paymentModal = require("../model/paymentModal");
 
 class paymentController {
   bkash_headers = async () => {
@@ -12,8 +13,8 @@ class paymentController {
     };
   };
   payment_create = async (req, res) => {
-    const { amount } = req.body;
-    console.log(amount);
+    const { amount, userId } = req.body;
+
     try {
       const { data } = await axios.post(
         process.env.bkash_create_payment_url,
@@ -40,7 +41,7 @@ class paymentController {
   call_back = async (req, res) => {
     const { paymentID, status } = req.query;
 
-    if (status === "cancel" || status === "failur") {
+    if (status === "cancel" || status === "failure") {
       return res.redirect(`http://localhost:5173/error?message=${status}`);
     }
     if (status === "success") {
@@ -53,9 +54,23 @@ class paymentController {
           }
         );
         if (data && data.statusCode === "0000") {
+          await paymentModal.create({
+            userId: Math.random() * 10 + 1,
+            paymentID,
+            traxID: data.traxID,
+            date: date.paymentExecuteTime,
+            amount: data.amount,
+          });
+          return res.redirect(`http://localhost:5173/success`);
+        } else {
+          return res.redirect(
+            `http://localhost:5173/error?message=${error.statusMessage}`
+          );
         }
       } catch (error) {}
-      // return res.redirect(`http://localhost:5173/error?message=${status}`);
+      return res.redirect(
+        `http://localhost:5173/error?message=${error.message}`
+      );
     }
     console.log(req.query);
   };
