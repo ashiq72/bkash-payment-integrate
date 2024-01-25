@@ -53,21 +53,24 @@ class paymentController {
             headers: await this.bkash_headers(),
           }
         );
-        if (data && data.statusCode === "0000") {
-          await paymentModal.create({
-            userId: Math.random() * 10 + 1,
-            paymentID,
-            traxID: data.traxID,
-            date: date.paymentExecuteTime,
-            amount: data.amount,
-          });
-          return res.redirect(`http://localhost:5173/success`);
-        } else {
-          return res.redirect(
-            `http://localhost:5173/error?message=${error.statusMessage}`
-          );
-        }
+        // if (data && data.statusCode === "0000") {
+        //   await paymentModal.create({
+        //     userId: Math.random() * 10 + 1,
+        //     paymentID,
+        //     traxID: data.traxID,
+        //     date: date.paymentExecuteTime,
+        //     amount: parseInt(data.amount),
+        //   });
+        //   return res.redirect(`http://localhost:5173/success`);
+        // } else {
+        //   console.log("If not Success error: ", data);
+        //   return res.redirect(
+        //     `http://localhost:5173/error?message=${data.statusMessage}`
+        //   );
+        // }
+        return res.redirect(`http://localhost:5173/success`);
       } catch (error) {}
+
       return res.redirect(
         `http://localhost:5173/error?message=${error.message}`
       );

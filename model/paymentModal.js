@@ -3,16 +3,16 @@ const { Schema, model } = require("mongoose");
 const payment = new Schema(
   {
     userId: {
-      type: String,
+      type: Number,
     },
     amount: {
       type: Number,
     },
     trxID: {
-      type: Number,
+      type: String,
     },
     PaymentID: {
-      type: Number,
+      type: String,
     },
     date: {
       type: String,
